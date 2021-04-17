@@ -1,5 +1,6 @@
 package io.github.staakk.randomcity.data.model
 
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.time.LocalDateTime
@@ -11,5 +12,7 @@ data class City(
     val id: String = UUID.randomUUID().toString(),
     val name: String,
     val color: Int,
-    val createdAt: LocalDateTime
+    val createdAt: LocalDateTime,
+    @Embedded
+    val coordinate: Coordinate
 )

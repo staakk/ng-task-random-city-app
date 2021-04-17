@@ -3,6 +3,7 @@ package io.github.staakk.randomcity.data
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
+import io.github.staakk.randomcity.data.local.geocoder.Geocoder
 import io.github.staakk.randomcity.data.model.City
 import io.reactivex.Completable
 import io.reactivex.Observable
@@ -17,7 +18,8 @@ import kotlin.random.Random
 
 
 class CityProducer(
-    private val cityDataSource: CityDataSource
+    private val cityDataSource: CityDataSource,
+    private val geocoder: Geocoder
 ) : LifecycleObserver {
 
     private val cities = listOf(
@@ -50,10 +52,20 @@ class CityProducer(
     fun start() {
         disposable = Observable.interval(5, TimeUnit.SECONDS)
             .observeOn(Schedulers.io())
-            .map {
-                val name = cities[Random.nextInt(cities.size)]
+            .flatMap {
+                val cityName = cities[Random.nextInt(cities.size)]
+                geocoder.nameToCoordinate(cityName)
+                    .map { it to cityName }
+                    .toObservable()
+            }
+            .map { (coordinate, cityName) ->
                 val color = ColorParser.parse(colors[Random.nextInt(colors.size)])
-                City(name = name, color = color, createdAt = LocalDateTime.now())
+                City(
+                    name = cityName,
+                    color = color,
+                    createdAt = LocalDateTime.now(),
+                    coordinate = coordinate
+                )
             }
             .subscribeBy(
                 onNext = {

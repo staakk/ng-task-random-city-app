@@ -5,6 +5,10 @@
     package="io.github.staakk.randomcity"
     >
 
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true"/>
+
     <application
         android:name=".RandomCityApp"
         android:allowBackup="true"
@@ -15,6 +19,11 @@
         android:theme="@style/Theme.RandomCity"
         tools:ignore="AllowBackup"
         >
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAPS_API_KEY}" />
+
         <activity android:name=".RandomCityActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

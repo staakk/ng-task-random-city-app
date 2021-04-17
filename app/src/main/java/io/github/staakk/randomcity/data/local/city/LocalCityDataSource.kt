@@ -1,4 +1,4 @@
-package io.github.staakk.randomcity.data.local
+package io.github.staakk.randomcity.data.local.city
 
 import io.github.staakk.randomcity.data.model.City
 import io.github.staakk.randomcity.data.CityDataSource

@@ -1,4 +1,4 @@
-package io.github.staakk.randomcity.data.local
+package io.github.staakk.randomcity.data.local.city
 
 import androidx.room.Dao
 import androidx.room.Insert
