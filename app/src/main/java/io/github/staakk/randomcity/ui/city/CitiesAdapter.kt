@@ -2,6 +2,7 @@ package io.github.staakk.randomcity.ui.city
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import io.github.staakk.randomcity.data.City
 import io.github.staakk.randomcity.databinding.ItemCityBinding
@@ -15,7 +16,7 @@ class CitiesAdapter(
 
     var items: List<City> = listOf()
         set(value) {
-            notifyDataSetChanged()
+            DiffUtil.calculateDiff(DiffCallback(field, value)).dispatchUpdatesTo(this)
             field = value
         }
 
@@ -41,5 +42,22 @@ class CitiesAdapter(
             name.text = city.name
             createdAt.text = city.createdAt.format(dateTimeFormatter)
         }
+    }
+
+    class DiffCallback(
+        private val oldItems: List<City>,
+        private val newItems: List<City>
+    ) : DiffUtil.Callback() {
+        override fun getOldListSize(): Int = oldItems.size
+
+        override fun getNewListSize(): Int = newItems.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldItems[oldItemPosition].id == newItems[newItemPosition].id
+
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            oldItems[oldItemPosition] == newItems[newItemPosition]
+
     }
 }

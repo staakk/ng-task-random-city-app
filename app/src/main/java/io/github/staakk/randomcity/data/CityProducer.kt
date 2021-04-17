@@ -45,6 +45,7 @@ class CityProducer(
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    @Suppress("unused") // Lifecycle event.
     fun start() {
         disposable = Observable.interval(5, TimeUnit.SECONDS)
             .observeOn(Schedulers.io())
@@ -63,6 +64,7 @@ class CityProducer(
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    @Suppress("unused") // Lifecycle event.
     fun stop() {
         disposable?.dispose()
         disposable = null

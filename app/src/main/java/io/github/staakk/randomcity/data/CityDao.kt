@@ -11,6 +11,6 @@ interface CityDao {
     @Insert
     fun insert(city: City)
 
-    @Query("SELECT * FROM city ORDER BY name DESC")
+    @Query("SELECT * FROM city ORDER BY name ASC")
     fun getOrderedByName(): Observable<List<City>>
 }
