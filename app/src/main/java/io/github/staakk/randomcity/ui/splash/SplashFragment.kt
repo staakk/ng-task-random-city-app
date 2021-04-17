@@ -6,11 +6,19 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
+import dagger.android.support.DaggerFragment
 import io.github.staakk.randomcity.R
 import io.github.staakk.randomcity.ui.city.CitiesFragment
+import javax.inject.Inject
 
-class SplashFragment : Fragment() {
+class SplashFragment : DaggerFragment() {
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private val viewModel by viewModels<SplashViewModel> { viewModelFactory }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -22,10 +30,9 @@ class SplashFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-
         Handler(Looper.getMainLooper()).postDelayed(
             {
-                requireFragmentManager()
+                parentFragmentManager
                     .beginTransaction()
                     .replace(R.id.fragment_container, CitiesFragment())
                     .commit()
