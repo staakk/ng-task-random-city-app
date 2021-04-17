@@ -1,5 +1,7 @@
-package io.github.staakk.randomcity.data
+package io.github.staakk.randomcity.data.local
 
+import io.github.staakk.randomcity.data.model.City
+import io.github.staakk.randomcity.data.CityDataSource
 import io.reactivex.Observable
 
 class LocalCityDataSource constructor(

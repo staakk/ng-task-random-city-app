@@ -4,13 +4,17 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import io.github.staakk.randomcity.data.City
+import io.github.staakk.randomcity.data.model.City
 import io.github.staakk.randomcity.databinding.ItemCityBinding
 import java.time.format.DateTimeFormatter
 
 class CitiesAdapter(
-    private val onItemClickListener: (City) -> Unit
+    private val onItemClickListener: OnItemClickListener
 ) : RecyclerView.Adapter<CitiesAdapter.CityViewHolder>() {
+
+    fun interface OnItemClickListener {
+        fun onItemClick(city: City)
+    }
 
     private val dateTimeFormatter = DateTimeFormatter.ofPattern("dd MMM yy, HH:mm:ss")
 
@@ -37,7 +41,7 @@ class CitiesAdapter(
     ) : RecyclerView.ViewHolder(viewBinding.root) {
 
         fun bind(city: City) = with(viewBinding) {
-            root.setOnClickListener { onItemClickListener(city) }
+            root.setOnClickListener { onItemClickListener.onItemClick(city) }
 
             name.text = city.name
             createdAt.text = city.createdAt.format(dateTimeFormatter)

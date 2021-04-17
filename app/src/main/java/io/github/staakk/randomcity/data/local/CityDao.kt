@@ -1,8 +1,9 @@
-package io.github.staakk.randomcity.data
+package io.github.staakk.randomcity.data.local
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import io.github.staakk.randomcity.data.model.City
 import io.reactivex.Observable
 
 @Dao

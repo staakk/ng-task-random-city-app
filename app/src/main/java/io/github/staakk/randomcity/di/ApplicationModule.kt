@@ -6,8 +6,8 @@ import dagger.Module
 import dagger.Provides
 import io.github.staakk.randomcity.data.CityDataSource
 import io.github.staakk.randomcity.data.CityProducer
-import io.github.staakk.randomcity.data.LocalCityDataSource
-import io.github.staakk.randomcity.data.RandomCityDatabase
+import io.github.staakk.randomcity.data.local.LocalCityDataSource
+import io.github.staakk.randomcity.data.local.RandomCityDatabase
 import javax.inject.Singleton
 
 @Module

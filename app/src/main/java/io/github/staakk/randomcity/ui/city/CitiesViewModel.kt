@@ -1,7 +1,7 @@
 package io.github.staakk.randomcity.ui.city
 
 import androidx.lifecycle.*
-import io.github.staakk.randomcity.data.City
+import io.github.staakk.randomcity.data.model.City
 import io.github.staakk.randomcity.data.CityDataSource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable

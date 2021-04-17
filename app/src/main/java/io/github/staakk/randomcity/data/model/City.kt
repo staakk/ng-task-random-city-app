@@ -1,4 +1,4 @@
-package io.github.staakk.randomcity.data
+package io.github.staakk.randomcity.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
