@@ -10,6 +10,6 @@ data class City(
     @PrimaryKey
     val id: String = UUID.randomUUID().toString(),
     val name: String,
-    val color: String = "",
-    val createdAt: LocalDateTime = LocalDateTime.now()
+    val color: Int,
+    val createdAt: LocalDateTime
 )

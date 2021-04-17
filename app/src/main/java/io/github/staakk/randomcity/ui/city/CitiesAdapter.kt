@@ -11,7 +11,7 @@ class CitiesAdapter(
     private val onItemClickListener: (City) -> Unit
 ) : RecyclerView.Adapter<CitiesAdapter.CityViewHolder>() {
 
-    private val dateTimeFormatter = DateTimeFormatter.ofPattern("dd MMM yy, HH:mm")
+    private val dateTimeFormatter = DateTimeFormatter.ofPattern("dd MMM yy, HH:mm:ss")
 
     var items: List<City> = listOf()
         set(value) {

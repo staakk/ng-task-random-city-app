@@ -49,7 +49,8 @@ class CityDetailsFragment : DaggerFragment() {
             binding.root.text = it.name
             getActionBar()?.apply {
                 title = it.name
-                setBackgroundDrawable(ColorDrawable(Color.GRAY))
+                setBackgroundDrawable(ColorDrawable(it.color))
+
             }
         }
     }
