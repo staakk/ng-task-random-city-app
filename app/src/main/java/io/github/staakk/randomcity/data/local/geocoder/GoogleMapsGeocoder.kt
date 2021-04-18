@@ -2,11 +2,14 @@ package io.github.staakk.randomcity.data.local.geocoder
 
 import android.content.Context
 import io.github.staakk.randomcity.data.model.Coordinate
+import io.reactivex.Scheduler
 import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
 import java.io.IOException
 
-class GoogleMapsGeocoder(context: Context) : Geocoder {
+class GoogleMapsGeocoder(
+    context: Context,
+    private val scheduler: Scheduler
+) : Geocoder {
 
     private val geocoder = android.location.Geocoder(context)
 
@@ -26,5 +29,5 @@ class GoogleMapsGeocoder(context: Context) : Geocoder {
             } catch (exception: IOException) {
                 emitter.onError(Geocoder.Error.IOException(exception))
             }
-        }.subscribeOn(Schedulers.io())
+        }.subscribeOn(scheduler)
 }

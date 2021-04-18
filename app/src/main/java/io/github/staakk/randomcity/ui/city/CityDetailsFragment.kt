@@ -1,7 +1,6 @@
 package io.github.staakk.randomcity.ui.city
 
 import android.graphics.drawable.ColorDrawable
-import android.location.Geocoder
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -43,6 +42,9 @@ class CityDetailsFragment : DaggerFragment() {
             LatLng(54.833333, 24.14585)
         )
         it.moveCamera(CameraUpdateFactory.newLatLngZoom(polandBounds.center, 6.5f))
+        viewModel.selectedCity.value?.let { city ->
+            focusMap(city.coordinate.toLatLng())
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,7 +80,7 @@ class CityDetailsFragment : DaggerFragment() {
     }
 
     private fun focusMap(latLng: LatLng) {
-        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 8f))
+        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f))
     }
 
     override fun onStart() {

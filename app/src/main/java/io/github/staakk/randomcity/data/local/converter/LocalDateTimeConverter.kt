@@ -1,4 +1,4 @@
-package io.github.staakk.randomcity.data.converter
+package io.github.staakk.randomcity.data.local.converter
 
 import androidx.room.TypeConverter
 import java.time.LocalDateTime

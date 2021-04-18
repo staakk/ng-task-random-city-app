@@ -1,10 +1,10 @@
 package io.github.staakk.randomcity
 
 import android.os.Bundle
-import dagger.android.support.DaggerAppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import io.github.staakk.randomcity.ui.splash.SplashFragment
 
-class RandomCityActivity : DaggerAppCompatActivity() {
+class RandomCityActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -16,11 +16,6 @@ abstract class CitiesModule {
     @ContributesAndroidInjector(modules = [
         ViewModelBuilder::class
     ])
-    abstract fun randomCityActivity(): RandomCityActivity
-
-    @ContributesAndroidInjector(modules = [
-        ViewModelBuilder::class
-    ])
     abstract fun citiesFragment(): CitiesFragment
 
     @ContributesAndroidInjector(modules = [

@@ -3,13 +3,14 @@ package io.github.staakk.randomcity.data
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
+import io.github.staakk.randomcity.data.colorparser.ColorParser
 import io.github.staakk.randomcity.data.local.geocoder.Geocoder
 import io.github.staakk.randomcity.data.model.City
 import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.Scheduler
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 import java.time.LocalDateTime
@@ -19,7 +20,9 @@ import kotlin.random.Random
 
 class CityProducer(
     private val cityDataSource: CityDataSource,
-    private val geocoder: Geocoder
+    private val geocoder: Geocoder,
+    private val colorParser: ColorParser,
+    private val scheduler: Scheduler
 ) : LifecycleObserver {
 
     private val cities = listOf(
@@ -51,7 +54,7 @@ class CityProducer(
     @Suppress("unused") // Lifecycle event.
     fun start() {
         disposable = Observable.interval(5, TimeUnit.SECONDS)
-            .observeOn(Schedulers.io())
+            .observeOn(scheduler)
             .flatMap {
                 val cityName = cities[Random.nextInt(cities.size)]
                 geocoder.nameToCoordinate(cityName)
@@ -59,7 +62,7 @@ class CityProducer(
                     .toObservable()
             }
             .map { (coordinate, cityName) ->
-                val color = ColorParser.parse(colors[Random.nextInt(colors.size)])
+                val color = colorParser.parse(colors[Random.nextInt(colors.size)])
                 City(
                     name = cityName,
                     color = color,

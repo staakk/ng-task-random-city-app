@@ -16,11 +16,11 @@ class CitiesAdapter(
         fun onItemClick(city: City)
     }
 
-    private val dateTimeFormatter = DateTimeFormatter.ofPattern("dd MMM yy, HH:mm:ss")
+    private val dateTimeFormatter = DateTimeFormatter.ofPattern("dd MMMM yy, HH:mm:ss")
 
     var items: List<City> = listOf()
         set(value) {
-            DiffUtil.calculateDiff(DiffCallback(field, value)).dispatchUpdatesTo(this)
+            DiffUtil.calculateDiff(CitiesListDiffCallback(field, value)).dispatchUpdatesTo(this)
             field = value
         }
 
@@ -47,21 +47,21 @@ class CitiesAdapter(
             createdAt.text = city.createdAt.format(dateTimeFormatter)
         }
     }
+}
 
-    class DiffCallback(
-        private val oldItems: List<City>,
-        private val newItems: List<City>
-    ) : DiffUtil.Callback() {
-        override fun getOldListSize(): Int = oldItems.size
+private class CitiesListDiffCallback(
+    private val oldItems: List<City>,
+    private val newItems: List<City>
+) : DiffUtil.Callback() {
+    override fun getOldListSize(): Int = oldItems.size
 
-        override fun getNewListSize(): Int = newItems.size
+    override fun getNewListSize(): Int = newItems.size
 
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            oldItems[oldItemPosition].id == newItems[newItemPosition].id
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+        oldItems[oldItemPosition].id == newItems[newItemPosition].id
 
 
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            oldItems[oldItemPosition] == newItems[newItemPosition]
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+        oldItems[oldItemPosition] == newItems[newItemPosition]
 
-    }
 }
