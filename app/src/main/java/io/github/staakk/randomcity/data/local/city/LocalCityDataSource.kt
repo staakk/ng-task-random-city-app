@@ -14,7 +14,7 @@ class LocalCityDataSource constructor(
         cityDao.insert(city)
     }
 
-    override fun getOrderedByName(): Observable<List<City>> =
+    override fun getOrderedByNameAsc(): Observable<List<City>> =
         cityDao.getOrderedByName()
             .subscribeOn(scheduler)
 }

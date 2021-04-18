@@ -5,7 +5,13 @@ import io.reactivex.Observable
 
 interface CityDataSource {
 
+    /**
+     * Save a [city].
+     */
     fun insert(city: City)
 
-    fun getOrderedByName(): Observable<List<City>>
+    /**
+     * Get observable list of cities ordered ascending by name.
+     */
+    fun getOrderedByNameAsc(): Observable<List<City>>
 }

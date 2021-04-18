@@ -8,5 +8,3 @@ data class Coordinate(
 )
 
 fun Coordinate.toLatLng() = LatLng(latitude, longitude)
-
-fun LatLng.toCoordinate() = Coordinate(latitude, longitude)

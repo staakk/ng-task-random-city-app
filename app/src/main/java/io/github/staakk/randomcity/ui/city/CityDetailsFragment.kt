@@ -17,12 +17,16 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.LatLngBounds
 import dagger.android.support.DaggerFragment
 import io.github.staakk.randomcity.R
 import io.github.staakk.randomcity.data.model.toLatLng
 import io.github.staakk.randomcity.databinding.FragmentCityDetailsBinding
+import io.github.staakk.randomcity.util.Locations
+import io.github.staakk.randomcity.util.brightness
 import javax.inject.Inject
+
+private const val ZOOM_OVERVIEW = 6.5f
+private const val ZOOM_FOCUS = 11f
 
 class CityDetailsFragment : DaggerFragment() {
 
@@ -40,11 +44,12 @@ class CityDetailsFragment : DaggerFragment() {
     private val onMapReadyCallback: OnMapReadyCallback = OnMapReadyCallback {
         if (!isAdded) return@OnMapReadyCallback
         map = it
-        val polandBounds = LatLngBounds(
-            LatLng(49.002024, 14.12298),
-            LatLng(54.833333, 24.14585)
+        it.moveCamera(
+            CameraUpdateFactory.newLatLngZoom(
+                Locations.polandBounds.center,
+                ZOOM_OVERVIEW
+            )
         )
-        it.moveCamera(CameraUpdateFactory.newLatLngZoom(polandBounds.center, 6.5f))
         viewModel.selectedCity.value?.let { city ->
             focusMap(city.coordinate.toLatLng())
         }
@@ -85,7 +90,7 @@ class CityDetailsFragment : DaggerFragment() {
     }
 
     private fun focusMap(latLng: LatLng) {
-        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f))
+        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, ZOOM_FOCUS))
     }
 
     override fun onStart() {
@@ -100,14 +105,8 @@ class CityDetailsFragment : DaggerFragment() {
 
     @ColorInt
     private fun getActionBarTextColor(@ColorInt backgroundColor: Int): Int {
-        val r: Float = (backgroundColor shr 16 and 0xff) / 255.0f
-        val g: Float = (backgroundColor shr 8 and 0xff) / 255.0f
-        val b: Float = (backgroundColor and 0xff) / 255.0f
-
-        val brightness = (r + g + b) / 3
-        val colorRes = if (brightness > 0.5f) R.color.black else R.color.white
+        val colorRes = if (backgroundColor.brightness > 0.5f) R.color.black else R.color.white
         return ResourcesCompat.getColor(resources, colorRes, requireContext().theme)
-
     }
 
     private fun setActionBarTextColor(@ColorInt color: Int) {

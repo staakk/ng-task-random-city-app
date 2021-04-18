@@ -6,10 +6,8 @@ import io.github.staakk.randomcity.data.CityDataSource
 import io.github.staakk.randomcity.di.SchedulerQualifier
 import io.github.staakk.randomcity.di.SchedulerQualifier.Type
 import io.reactivex.Scheduler
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -31,7 +29,7 @@ class CitiesViewModel @Inject constructor(
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     @Suppress("unused") // Lifecycle event.
     fun observeCities() {
-        cityDataSource.getOrderedByName()
+        cityDataSource.getOrderedByNameAsc()
             .observeOn(mainScheduler)
             .subscribeBy(
                 onNext = { _cities.value = it },

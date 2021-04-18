@@ -18,6 +18,7 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 import io.github.staakk.randomcity.R;
+import io.github.staakk.randomcity.data.model.City;
 import io.github.staakk.randomcity.databinding.FragmentCitiesBinding;
 import kotlin.Lazy;
 import kotlin.LazyKt;
@@ -36,7 +37,28 @@ public class CitiesFragment extends DaggerFragment {
     @Nullable
     private FragmentCitiesBinding _binding = null;
 
-    private final CitiesAdapter citiesAdapter = new CitiesAdapter(city -> {
+    @Nullable
+    private CitiesAdapter citiesAdapter = null;
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        _binding = FragmentCitiesBinding.inflate(inflater, container, false);
+
+        final CitiesAdapter adapter = new CitiesAdapter(
+                this::onItemClickListener,
+                getResources().getString(R.string.date_time_pattern)
+        );
+        citiesAdapter = adapter;
+
+        final RecyclerView citiesList = _binding.cities;
+        citiesList.setAdapter(adapter);
+        citiesList.setLayoutManager(new LinearLayoutManager(requireContext()));
+
+        return getBinding().getRoot();
+    }
+
+    private void onItemClickListener(@NonNull final City city) {
         getViewModel().selectCity(city);
 
         if (!getResources().getBoolean(R.bool.isTabletLandscape)) {
@@ -45,18 +67,6 @@ public class CitiesFragment extends DaggerFragment {
                     .replace(R.id.fragment_container, new CityDetailsFragment())
                     .commit();
         }
-    });
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        _binding = FragmentCitiesBinding.inflate(inflater, container, false);
-
-        final RecyclerView citiesList = _binding.cities;
-        citiesList.setAdapter(citiesAdapter);
-        citiesList.setLayoutManager(new LinearLayoutManager(requireContext()));
-
-        return getBinding().getRoot();
     }
 
     @Override
@@ -69,21 +79,27 @@ public class CitiesFragment extends DaggerFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        getViewModel().getCities()
-                .observe(getViewLifecycleOwner(), citiesAdapter::setItems);
+        getViewModel().getCities().observe(getViewLifecycleOwner(), items -> {
+            if (citiesAdapter != null) {
+                citiesAdapter.setItems(items);
+            }
+        });
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         _binding = null;
-        citiesAdapter.setItems(Collections.emptyList());
+        if (citiesAdapter != null) {
+            citiesAdapter.setItems(Collections.emptyList());
+        }
+        citiesAdapter = null;
     }
 
     @NonNull
     private FragmentCitiesBinding getBinding() {
         if (_binding == null) {
-            throw new  IllegalStateException("_binding is not initialised!");
+            throw new IllegalStateException("`_binding` is not initialised!");
         }
         return _binding;
     }

@@ -9,14 +9,15 @@ import io.github.staakk.randomcity.databinding.ItemCityBinding
 import java.time.format.DateTimeFormatter
 
 class CitiesAdapter(
-    private val onItemClickListener: OnItemClickListener
+    private val onItemClickListener: OnItemClickListener,
+    dateTimePattern: String
 ) : RecyclerView.Adapter<CitiesAdapter.CityViewHolder>() {
 
     fun interface OnItemClickListener {
         fun onItemClick(city: City)
     }
 
-    private val dateTimeFormatter = DateTimeFormatter.ofPattern("dd MMMM yy, HH:mm:ss")
+    private val dateTimeFormatter = DateTimeFormatter.ofPattern(dateTimePattern)
 
     var items: List<City> = listOf()
         set(value) {

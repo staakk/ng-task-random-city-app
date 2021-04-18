@@ -17,6 +17,18 @@ import java.time.LocalDateTime
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random
 
+private const val CITY_PRODUCTION_INTERVAL_SECONDS = 5L
+
+private val cities = listOf(
+    "Gdańsk",
+    "Warszawa",
+    "Poznań",
+    "Białystok",
+    "Wrocław",
+    "Katowice",
+    "Kraków"
+)
+private val colors = listOf("Yellow", "Green", "Blue", "Red", "Black", "White")
 
 class CityProducer(
     private val cityDataSource: CityDataSource,
@@ -24,17 +36,6 @@ class CityProducer(
     private val colorParser: ColorParser,
     private val scheduler: Scheduler
 ) : LifecycleObserver {
-
-    private val cities = listOf(
-        "Gdańsk",
-        "Warszawa",
-        "Poznań",
-        "Białystok",
-        "Wrocław",
-        "Katowice",
-        "Kraków"
-    )
-    private val colors = listOf("Yellow", "Green", "Blue", "Red", "Black", "White")
 
     private var disposable: Disposable? = null
 
@@ -53,7 +54,7 @@ class CityProducer(
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     @Suppress("unused") // Lifecycle event.
     fun start() {
-        disposable = Observable.interval(5, TimeUnit.SECONDS)
+        disposable = Observable.interval(CITY_PRODUCTION_INTERVAL_SECONDS, TimeUnit.SECONDS)
             .observeOn(scheduler)
             .flatMap {
                 val cityName = cities[Random.nextInt(cities.size)]
