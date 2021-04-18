@@ -5,8 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.ColorInt
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -75,6 +78,8 @@ class CityDetailsFragment : DaggerFragment() {
                 title = it.name
                 setBackgroundDrawable(ColorDrawable(it.color))
             }
+            val textColor = getActionBarTextColor(it.color)
+            setActionBarTextColor(textColor)
             focusMap(it.coordinate.toLatLng())
         }
     }
@@ -91,6 +96,23 @@ class CityDetailsFragment : DaggerFragment() {
     override fun onStop() {
         super.onStop()
         getActionBar()?.hide()
+    }
+
+    @ColorInt
+    private fun getActionBarTextColor(@ColorInt backgroundColor: Int): Int {
+        val r: Float = (backgroundColor shr 16 and 0xff) / 255.0f
+        val g: Float = (backgroundColor shr 8 and 0xff) / 255.0f
+        val b: Float = (backgroundColor and 0xff) / 255.0f
+
+        val brightness = (r + g + b) / 3
+        val colorRes = if (brightness > 0.5f) R.color.black else R.color.white
+        return ResourcesCompat.getColor(resources, colorRes, requireContext().theme)
+
+    }
+
+    private fun setActionBarTextColor(@ColorInt color: Int) {
+        val toolbar = requireActivity().findViewById<Toolbar>(R.id.toolbar)
+        toolbar.setTitleTextColor(color)
     }
 
     private fun getActionBar(): ActionBar? {
