@@ -8,10 +8,9 @@ import java.io.IOException
 
 class GoogleMapsGeocoder(
     context: Context,
-    private val scheduler: Scheduler
+    private val scheduler: Scheduler,
+    private val geocoder: android.location.Geocoder = android.location.Geocoder(context)
 ) : Geocoder {
-
-    private val geocoder = android.location.Geocoder(context)
 
     override fun nameToCoordinate(locationName: String): Single<Coordinate> =
         Single.create<Coordinate> { emitter ->

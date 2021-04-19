@@ -48,15 +48,16 @@ class CityProducer(
                 onError = emitter::onError
             )
             .also { emitter.setDisposable(it) }
-
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     @Suppress("unused") // Lifecycle event.
     fun start() {
-        disposable = Observable.interval(CITY_PRODUCTION_INTERVAL_SECONDS, TimeUnit.SECONDS)
-            .observeOn(scheduler)
-            .flatMap {
+        disposable = Observable.interval(
+            CITY_PRODUCTION_INTERVAL_SECONDS,
+            TimeUnit.SECONDS,
+            scheduler
+        ).flatMap {
                 val cityName = cities[Random.nextInt(cities.size)]
                 geocoder.nameToCoordinate(cityName)
                     .map { it to cityName }
